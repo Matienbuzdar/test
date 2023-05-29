@@ -74,7 +74,7 @@
 
                             <div class="card-header">
 
-                                Laravel - Razorpay Payment Gateway Integration
+                                Laravel - Razorpay Payment Gateway Integration in Easy way
 
                             </div>
 
@@ -91,6 +91,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
+
                                                     <label>Amount</label>
                                                       <input type="text" name="amount" class="form-control" >
                                                 </div>
