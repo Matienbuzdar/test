@@ -8,6 +8,5 @@
 <body>
 
 
-<h1>Payment has been made successfully</h1>
 </body>
 </html>
