@@ -72,6 +72,7 @@ class RazorpayPaymentController extends Controller
     public function resRazorpay(Request $request)
     {
         session()->flush('data');
+        
         dd($request->all());
                 // PHP SDK: https://github.com/razorpay/razorpay-php
         // use Razorpay\Api\Api;
