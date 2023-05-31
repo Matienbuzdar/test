@@ -17,7 +17,7 @@ class RazorpayPaymentController extends Controller
         $input = $request->all();
         
 
-        $api = new Api('rzp_live_S1c6FeCd9ihl6l', 'H8EUFxa4B7JaiRxTXUB7CfdP');
+        $api = new Api('api keys', 'your api keys');
         
 
         //$api = new Api($key_id, $secret);
