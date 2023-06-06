@@ -5,80 +5,54 @@ use Illuminate\Http\Request;
 use Razorpay\Api\Api;
 use Session;
 use Exception;
+use App\Models\User;
+use App\Models\Post;
 use App\Http\Requests\Razorpay\RazorpayRequest;
+use Carbon\Carbon;
+use DB;
 
 class RazorpayPaymentController extends Controller
 {
+    protected $api;
+
+    public function __construct(Api $api)
+    {
+        $this->api = $api;
+    }
 
     public function store(RazorpayRequest $request)
-
     {
+       $users = User::with('post')->get();     
+       $input = $request->all();
+       $order = $this->api->order->create(array('receipt' => '123', 'amount' => $request->amount*100, 'currency' => 'USD', 'notes'=> array('key1'=> 'value3','key2'=> 'value2')));
+      if(!$order){
+        abort(404);
+      }
 
-        $input = $request->all();
-        
+          session()->put('data',$order);
+            return redirect('/');
+           
+      
 
-        $api = new Api('rzp_live_S1c6FeCd9ihl6l', 'H8EUFxa4B7JaiRxTXUB7CfdP');
-        
-
-        //$api = new Api($key_id, $secret);
-
-          $order = $api->order->create(array('receipt' => '123', 'amount' => $request->amount*100, 'currency' => 'USD', 'notes'=> array('key1'=> 'value3','key2'=> 'value2')));
-          if($order){
-
-              $postData = [];
-              $postData['id'] = $order['id'];
-              $postData['amount'] = $request->amount;
-              $postData['currency'] = $order['currency'];
-              $postData['receipt'] = $order['receipt'];
-              $postData['status'] = $order['status'];
-              $postData['notes'] = json_encode($order['notes']);
-              session()->put('data',$postData);
-              if(session()->has('data')){
-                return redirect('/');
-               }
-          }
-
-          abort(404);
+       
        
           
-  
-
-        // if(count($input)  && !empty($input['razorpay_payment_id'])) {
-
-        //     try {
-
-        //         $response = $api->payment->fetch($input['razorpay_payment_id'])->capture(array('amount'=>$payment['amount'])); 
-
-        //     } catch (Exception $e) {
-
-        //         return  $e->getMessage();
-
-        //         Session::put('error',$e->getMessage());
-
-        //         return redirect()->back();
-
-        //     }
-
-        // }
-
-          
-
-        // Session::put('success', 'Payment successful');
-
-        // return redirect()->back();
 
     }
 
-    public function resRazorpay(Request $request)
+    public function paymentCallback(Request $request)
     {
-        session()->flush('data');
-        
-        dd($request->all());
-                // PHP SDK: https://github.com/razorpay/razorpay-php
-        // use Razorpay\Api\Api;
-        // $api = new Api("[YOUR_KEY_ID]", "[YOUR_KEY_SECRET]");
+         $api = new Api('rzp_live_S1c6FeCd9ihl6l','H8EUFxa4B7JaiRxTXUB7CfdP');
+         $payment = $api->payment->fetch(request('razorpay_payment_id'));
 
-        // $api->utility->verifyWebhookSignature($webhookBody, $webhookSignature, $webhookSecret);
-// $webhookBody should be raw webhook request body
+        if ($payment->status == 'captured') {
+            // Payment successful
+            // Add your logic here
+            return 'Payment successful';
+        } else {
+            // Payment failed
+            // Add your logic here
+            return 'Payment failed';
+        }
     }
 }

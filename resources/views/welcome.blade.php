@@ -80,8 +80,9 @@
 
                             <div class="card-body">
                                 <div class="container">
-                                    <form action="{{ route('razorpay.payment.store') }}" method="POST" id="razorpay-form">
+                                    <form action="{{ route('razorpay.payment.store') }}" method="POST" id="razorpay-form" enctype="multipart/form-data">
                                           @csrf
+                                          <input type="file" name="file" value="1" class="form-control">
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
@@ -102,10 +103,9 @@
 
                                 @if(session()->has('data'))
                                 
-                                <div class="alert alert-success">Your paid  amount is {{session()->get('data.amount')}}</div>
+                                <div class="alert alert-success mt-4">Your paid  amount is {{session()->get('data.amount')}}</div>
                                
                                 <form action="{{url('/response-razor')}}" method="POST" >
-
                                     @csrf
                                     <script src="https://checkout.razorpay.com/v1/checkout.js"
 
@@ -123,26 +123,15 @@
                                             data-prefill.email="akifbaloch3377@gmail.com"
 
                                             data-theme.color="#ff7529">
-
                                     </script>
-                                     
                                 </form>
                                 @endif
-
                             </div>
-
                         </div>
-
-  
-
                     </div>
-
                 </div>
-
             </div>
-
         </main>
-
     </div>
 
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>

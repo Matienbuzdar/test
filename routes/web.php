@@ -21,5 +21,5 @@ Route::get('/', function () {
 Route::get('razorpay-payment', [RazorpayPaymentController::class, 'index']);
 
 Route::post('razorpay-payment', [RazorpayPaymentController::class, 'store'])->name('razorpay.payment.store');
-Route::post('/response-razor', [RazorpayPaymentController::class, 'resRazorpay']);
+Route::post('/response-razor', [RazorpayPaymentController::class, 'paymentCallback']);
 
